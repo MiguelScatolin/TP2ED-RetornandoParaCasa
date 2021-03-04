@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/run.out",
-            "args": ["map.txt", "commands.txt"],
+            "args": ["dados_aleatorio.txt", 100],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
