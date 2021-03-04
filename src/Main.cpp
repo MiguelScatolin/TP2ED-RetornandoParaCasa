@@ -76,8 +76,8 @@ Base *splitAndMergeSorted(Base bases[], int leftIndex, int rightIndex) {
     return singleElement;
 }
 
-void mergeSort(Base bases[], int numberOfBases) {
-    bases = splitAndMergeSorted(bases, 0, numberOfBases - 1);
+void mergeSort(Base *bases[], int numberOfBases) {
+    *bases = splitAndMergeSorted(*bases, 0, numberOfBases - 1);
 }
 
 void printFirstBases(Base *bases) {
@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
 
         Base* bases = new Base[numberOfBases];
         populateBases(bases, file, numberOfBases);
-        mergeSort(bases, numberOfBases);
+        mergeSort(&bases, numberOfBases);
         printFirstBases(bases);
 
         return 0;
