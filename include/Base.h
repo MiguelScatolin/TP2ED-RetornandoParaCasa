@@ -7,8 +7,8 @@ class Base
 {
     public:
         Base() {};
-        Base(std::string name, int id) : name(name), id(id) {};
-        int id;
+        Base(std::string name, int distance) : name(name), distance(distance) {};
+        int distance;
         std::string name;
 };
 
