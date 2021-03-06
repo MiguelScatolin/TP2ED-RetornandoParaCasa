@@ -3,6 +3,7 @@
 #include <string>
 #include <cstdlib>
 #include "Base.h"
+#include "Stack.h"
 
 void populateBases(Base *bases, std::ifstream &file, int numberOfBases) {
     for (int i = 0; i < numberOfBases; i++) {
@@ -142,6 +143,46 @@ void shellSort(Base bases[], int numberOfBases)
     }
 }
 
+class Interval
+{
+    public:
+        Interval() {}
+        Interval(int left, int right) : left(left), right(right) {}
+        int left;
+        int right;
+};
+
+void nonRecursiveQuickSort(Base bases[], int numberOfBases) {
+    Stack<Interval> stack = Stack<Interval>();
+    int leftIndex = 0;
+    int rightIndex = numberOfBases - 1;
+    int i, j;
+    Interval currentInterval = Interval(leftIndex, rightIndex);
+    stack.Push(currentInterval);
+    do {
+        if (rightIndex > leftIndex) {
+            partition(bases, leftIndex, rightIndex, i, j);
+            if ((j-leftIndex)>(rightIndex-i)) {
+                currentInterval.right = j;
+                currentInterval.left = leftIndex;
+                stack.Push(currentInterval);
+                leftIndex = i;
+            }
+            else {
+                currentInterval.left = i;
+                currentInterval.right = rightIndex;
+                stack.Push(currentInterval);
+                rightIndex = j;
+            }
+        }
+        else {
+            currentInterval = stack.Pop();
+            rightIndex = currentInterval.right;
+            leftIndex = currentInterval.left;
+        }
+    } while (!stack.IsEmpty());
+}
+
 int main(int argc, char* argv[]) {
     try {
         if(argc < 3)
@@ -158,7 +199,7 @@ int main(int argc, char* argv[]) {
 
         Base* bases = new Base[numberOfBases];
         populateBases(bases, file, numberOfBases);
-        shellSort(bases, numberOfBases);
+        nonRecursiveQuickSort(bases, numberOfBases);
         printFirstBases(bases);
 
         return 0;
