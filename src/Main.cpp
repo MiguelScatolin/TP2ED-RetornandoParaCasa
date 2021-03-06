@@ -1,7 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include <string>
 #include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <time.h>
 #include "Base.h"
 #include "insertionSort.h"
 #include "MergeSort.h"
@@ -44,9 +45,14 @@ int main(int argc, char* argv[]) {
 
         Base* bases = new Base[numberOfBases];
         populateBases(bases, file, numberOfBases);
-        nonRecursiveQuickSort(bases, numberOfBases);
+
+        clock_t t = clock();
+        shellSort(bases, numberOfBases);
+        t = clock() - t;
+
         printFirstBases(bases);
 
+        std::cout << "Tempo de execucao: " << ((double)t)/((CLOCKS_PER_SEC/1000)) << std::endl;
         return 0;
     }
     catch (const char* exception) {
