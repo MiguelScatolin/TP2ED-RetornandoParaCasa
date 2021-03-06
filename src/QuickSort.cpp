@@ -4,7 +4,7 @@ void partition(Base bases[], int leftIndex, int rightIndex, int &i, int &j) {
     Base pivot, aux;
     i = leftIndex;
     j = rightIndex;
-    pivot = bases[0];
+    pivot = bases[leftIndex];
     do {
         while(pivot.distance < bases[i].distance) i++;
         while(pivot.distance > bases[j].distance) j--;
