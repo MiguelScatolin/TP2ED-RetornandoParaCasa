@@ -115,6 +115,33 @@ void quickSort(Base bases[], int numberOfBases) {
     sort(bases, 0, numberOfBases - 1);
 }
 
+void shellSort(Base bases[], int numberOfBases)
+{
+    // Start with a big gap, then reduce the gap
+    for (int gap = numberOfBases/2; gap > 0; gap /= 2)
+    {
+        // Do a gapped insertion sort for this gap size.
+        // The first gap elements a[0..gap-1] are already in gapped order
+        // keep adding one more element until the entire array is
+        // gap sorted
+        for (int i = gap; i < numberOfBases; i += 1)
+        {
+            // add a[i] to the elements that have been gap sorted
+            // save a[i] in temp and make a hole at position i
+            Base temp = bases[i];
+
+            // shift earlier gap-sorted elements up until the correct
+            // location for a[i] is found
+            int j;
+            for (j = i; j >= gap && bases[j - gap].distance < temp.distance; j -= gap)
+                bases[j] = bases[j - gap];
+
+            //  put temp (the original a[i]) in its correct location
+            bases[j] = temp;
+        }
+    }
+}
+
 int main(int argc, char* argv[]) {
     try {
         if(argc < 3)
@@ -131,7 +158,7 @@ int main(int argc, char* argv[]) {
 
         Base* bases = new Base[numberOfBases];
         populateBases(bases, file, numberOfBases);
-        quickSort(bases, numberOfBases);
+        shellSort(bases, numberOfBases);
         printFirstBases(bases);
 
         return 0;
