@@ -1,16 +1,8 @@
 #ifndef BASE_LIST_H
 #define BASE_LIST_H
 
+#include "AlgorithmEnum.h"
 #include "Base.h"
-
-enum AlgorithmEnum
-{
-    INSERTION_SORT,
-    MERGE_SORT,
-    QUICK_SORT,
-    SHELL_SORT,
-    IMPROVED_QUICK_SORT
-};
 
 class BaseList
 {

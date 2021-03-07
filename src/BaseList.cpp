@@ -7,6 +7,7 @@
 #include "NonRecursiveQuickSort.h"
 #include "QuickSort.h"
 #include "ShellSort.h"
+#include "AlgorithmEnum.h"
 
 BaseList::BaseList(char fileName[], int numberOfBases) {
     this->numberOfBases = numberOfBases;
