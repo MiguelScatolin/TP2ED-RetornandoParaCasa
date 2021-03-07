@@ -10,6 +10,8 @@
 #include "QuickSort.h"
 #include "ShellSort.h"
 
+#define NUMBER_OF_MEASURES 3
+
 void populateBases(Base *bases, std::ifstream &file, int numberOfBases) {
     for (int i = 0; i < numberOfBases; i++) {
             int distance;
@@ -31,18 +33,25 @@ void printFirstBases(Base *bases) {
 
 double measureAndPrintPerformancePerformance(char fileName[], int numberOfBases) {
     double totalTime = 0;
-    for(int i = 0; i < 3; i++) {
+    for(int i = 0; i < NUMBER_OF_MEASURES; i++) {
         std::ifstream file(fileName);
         Base* bases = new Base[numberOfBases];
         populateBases(bases, file, numberOfBases);
 
         clock_t t = clock();
-        shellSort(bases, numberOfBases);
+        quickSort(bases, numberOfBases);
         t = clock() - t;
         totalTime += ((double)t)/((CLOCKS_PER_SEC/1000));
     }
-    std::cout << "Média do tempo de execução(" << numberOfBases << "): " << totalTime / 3 << std::endl;
+    std::cout << "Média do tempo de execução(" << numberOfBases << "): " << totalTime / NUMBER_OF_MEASURES << std::endl;
 }
+
+void measurePerformanceForAllInputSizes(char fileName[]) {
+    int numberOfBasesToEvaluate[8] = {100, 500, 1000, 5000, 10000, 50000, 100000, 200000};
+    for(int i = 0; i < 8; i++)
+        measureAndPrintPerformancePerformance(fileName, numberOfBasesToEvaluate[i]);
+}
+
 int main(int argc, char* argv[]) {
     try {
         if(argc < 3)
@@ -52,16 +61,22 @@ int main(int argc, char* argv[]) {
         std::ifstream file(fileName);
 
         if (!file.is_open())
-            throw  "Erro ao abrir arquivo de mapa";
+            throw  "Erro ao abrir arquivo de bases";
 
-        /* int numberOfBases = atoi(argv[2]);
+        int numberOfBases = atoi(argv[2]);
         if(numberOfBases < 7)
-            throw "Mínimo de 7 bases devem ser analisadas"; */
+            throw "Mínimo de 7 bases devem ser analisadas";
 
-        int numberOfBasesToEvaluate[8] = {100, 500, 1000, 5000, 10000, 50000, 100000, 200000};
-        for(int i = 0; i < 8; i++)
-            measureAndPrintPerformancePerformance(fileName, numberOfBasesToEvaluate[i]);
-        //printFirstBases(bases);
+        Base* bases = new Base[numberOfBases];
+        populateBases(bases, file, numberOfBases);
+
+        clock_t t = clock();
+        mergeSort(&bases, numberOfBases);
+        t = clock() - t;
+
+        std::cout << "Média do tempo de execução(" << numberOfBases << "): " << ((double)t)/((CLOCKS_PER_SEC/1000)) << std::endl;
+
+        printFirstBases(bases);
         return 0;
     }
     catch (const char* exception) {
