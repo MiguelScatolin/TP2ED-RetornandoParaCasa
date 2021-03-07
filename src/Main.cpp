@@ -1,30 +1,13 @@
-#include <cstdlib>
 #include <iostream>
-#include "Base.h"
-#include "insertionSort.h"
-#include "MergeSort.h"
-#include "NonRecursiveQuickSort.h"
-#include "QuickSort.h"
-#include "ShellSort.h"
+#include "BaseList.h"
+#include "PerformanceMeasurement.h"
 
 #define VALID_INTEGER_EXCEPTION
-#define MIN_NUMBER_OF_BASES 7
 #define MAX_NUMBER_OF_BASES 200000
-
-enum AlgorithmEnum
-{
-    INSERTION_SORT,
-    MERGE_SORT,
-    QUICK_SORT,
-    SHELL_SORT,
-    IMPROVED_QUICK_SORT
-};
 
 int getNumberOfBases(char numberOfBasesString[]) {
     try {
         int numberOfBases = std::stoi(numberOfBasesString);
-        if(numberOfBases < MIN_NUMBER_OF_BASES)
-            throw "Mínimo de 7 bases devem ser analisadas";
         if(numberOfBases > MAX_NUMBER_OF_BASES)
             throw "Máximo de 200000 bases devem ser analisadas";
         return numberOfBases;
@@ -37,15 +20,16 @@ int getNumberOfBases(char numberOfBasesString[]) {
     }
 }
 
-int getAlgorithmNumber(char algorithmNumberString[]) {
-    int algorithmNumber;
+AlgorithmEnum getAlgorithmNumber(char algorithmNumberString[]) {
+    AlgorithmEnum algorithm;
     try {
-        algorithmNumber = std::stoi(algorithmNumberString);
+        int algorithmNumber = std::stoi(algorithmNumberString);
+        algorithm = static_cast<AlgorithmEnum>(algorithmNumber);
     }
     catch(...){
-        algorithmNumber = QUICK_SORT;
+        algorithm = QUICK_SORT;
     }
-    return algorithmNumber;
+    return algorithm;
 }
 
 int main(int argc, char* argv[]) {
@@ -54,37 +38,19 @@ int main(int argc, char* argv[]) {
             throw "Nome do arquivo ou número de bases não informados.";
 
         char *fileName = argv[1];
-
         int numberOfBases = getNumberOfBases(argv[2]);
+        AlgorithmEnum algorithm = getAlgorithmNumber(argv[3]);
 
-        int algorithm = getAlgorithmNumber(argv[3]);
+        BaseList baseList = BaseList(fileName, numberOfBases);
 
-        Base* bases = new Base[numberOfBases];
-        populateBases(bases, fileName, numberOfBases);
-
-        switch (algorithm){
-            case INSERTION_SORT:
-                insertionSort(bases, numberOfBases);
-                break;
-            case MERGE_SORT:
-                mergeSort(&bases, numberOfBases);
-                break;
-            case QUICK_SORT:
-                quickSort(bases, numberOfBases);
-                break;
-            case SHELL_SORT:
-                shellSort(bases, numberOfBases);
-                break;
-            case IMPROVED_QUICK_SORT:
-                nonRecursiveQuickSort(bases, numberOfBases);
-                break;
-            default:
-                quickSort(bases, numberOfBases);
+        if(numberOfBases) {
+            baseList.sort(algorithm);
+            baseList.printFirstBases();
+        }
+        else {
+            measurePerformanceForAllInputSizes(fileName, algorithm);
         }
 
-        printFirstBases(bases);
-
-        delete[] bases;
         return 0;
     }
     catch (const char* exception) {
