@@ -71,12 +71,14 @@ int main(int argc, char* argv[]) {
         populateBases(bases, file, numberOfBases);
 
         clock_t t = clock();
-        mergeSort(&bases, numberOfBases);
+        nonRecursiveQuickSort(bases, numberOfBases);
         t = clock() - t;
 
         std::cout << "Média do tempo de execução(" << numberOfBases << "): " << ((double)t)/((CLOCKS_PER_SEC/1000)) << std::endl;
 
         printFirstBases(bases);
+
+        delete[] bases;
         return 0;
     }
     catch (const char* exception) {

@@ -26,6 +26,9 @@ Base *merge(Base leftList[], Base rightList[], int numberOfLeftElements, int num
         }
     }
 
+    delete[] leftList;
+    delete[] rightList;
+
     return sortedMerge;
 }
 
@@ -44,5 +47,7 @@ Base *splitAndMergeSorted(Base bases[], int leftIndex, int rightIndex) {
 }
 
 void mergeSort(Base *bases[], int numberOfBases) {
-    *bases = splitAndMergeSorted(*bases, 0, numberOfBases - 1);
+    Base *sortedBases = splitAndMergeSorted(*bases, 0, numberOfBases - 1);
+    delete[] *bases;
+    *bases = sortedBases;
 }
