@@ -12,4 +12,7 @@ class Base
         std::string name;
 };
 
+void populateBases(Base *bases, char fileName[], int numberOfBases);
+void printFirstBases(Base *bases);
+
 #endif
