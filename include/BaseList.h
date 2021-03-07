@@ -1,7 +1,6 @@
 #ifndef BASE_LIST_H
 #define BASE_LIST_H
 
-#include <string>
 #include "Base.h"
 
 enum AlgorithmEnum
