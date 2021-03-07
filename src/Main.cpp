@@ -29,30 +29,39 @@ void printFirstBases(Base *bases) {
     }
 }
 
-int main(int argc, char* argv[]) {
-    try {
-        if(argc < 3)
-            throw "Nome do arquivo ou número de bases não informados.";
-
-        std::ifstream file(argv[1]);
-
-        if (!file.is_open())
-            throw  "Erro ao abrir arquivo de mapa";
-
-        int numberOfBases = atoi(argv[2]);
-        if(numberOfBases < 7)
-            throw "Mínimo de 7 bases devem ser analisadas";
-
+double measureAndPrintPerformancePerformance(char fileName[], int numberOfBases) {
+    double totalTime = 0;
+    for(int i = 0; i < 3; i++) {
+        std::ifstream file(fileName);
         Base* bases = new Base[numberOfBases];
         populateBases(bases, file, numberOfBases);
 
         clock_t t = clock();
         shellSort(bases, numberOfBases);
         t = clock() - t;
+        totalTime += ((double)t)/((CLOCKS_PER_SEC/1000));
+    }
+    std::cout << "Média do tempo de execução(" << numberOfBases << "): " << totalTime / 3 << std::endl;
+}
+int main(int argc, char* argv[]) {
+    try {
+        if(argc < 3)
+            throw "Nome do arquivo ou número de bases não informados.";
 
-        printFirstBases(bases);
+        char *fileName = argv[1];
+        std::ifstream file(fileName);
 
-        std::cout << "Tempo de execucao: " << ((double)t)/((CLOCKS_PER_SEC/1000)) << std::endl;
+        if (!file.is_open())
+            throw  "Erro ao abrir arquivo de mapa";
+
+        /* int numberOfBases = atoi(argv[2]);
+        if(numberOfBases < 7)
+            throw "Mínimo de 7 bases devem ser analisadas"; */
+
+        int numberOfBasesToEvaluate[8] = {100, 500, 1000, 5000, 10000, 50000, 100000, 200000};
+        for(int i = 0; i < 8; i++)
+            measureAndPrintPerformancePerformance(fileName, numberOfBasesToEvaluate[i]);
+        //printFirstBases(bases);
         return 0;
     }
     catch (const char* exception) {
