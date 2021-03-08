@@ -4,7 +4,7 @@
 #include "BaseList.h"
 #include "PerformanceMeasurement.h"
 
-double measureAndPrintPerformancePerformance(char fileName[], int numberOfBases, AlgorithmEnum algorithm) {
+void measureAndPrintPerformancePerformance(char fileName[], int numberOfBases, AlgorithmEnum algorithm) {
     double totalTime = 0;
     for(int i = 0; i < NUMBER_OF_MEASURES; i++) {
         BaseList baseList = BaseList(fileName, numberOfBases);
