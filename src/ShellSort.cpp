@@ -4,7 +4,7 @@ void shellSort(Base bases[], int numberOfBases)
 {
     for (int gap = numberOfBases/2; gap > 0; gap /= 2)
     {
-        for (int i = gap; i < numberOfBases; i += 1)
+        for (int i = gap; i < numberOfBases; i++)
         {
             Base temp = bases[i];
 
